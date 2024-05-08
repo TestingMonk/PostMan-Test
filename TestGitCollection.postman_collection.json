@@ -1,0 +1,244 @@
+{
+	"info": {
+		"_postman_id": "46b72379-8d43-4398-9c2f-2b5bb4453ad7",
+		"name": "Test Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27427632"
+	},
+	"item": [
+		{
+			"name": "GetUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response is 200\", function(){\r",
+							"\r",
+							"pm.response.to.have.status(200);\r",
+							"\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response time should be less than 200ms\",function(){\r",
+							"\r",
+							"    pm.expect(pm.response.responseTime).to.below(500);\r",
+							"\r",
+							"});\r",
+							"\r",
+							"pm.test(\"total pages is 2  \", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.total_pages).to.eql(2);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Email of id 7\", function(){\r",
+							"\r",
+							"        var   jsonData  =pm.response.json();\r",
+							"\r",
+							"        pm.expect(jsonData.data[0].email).to.eql(\"michael.lawson@reqres.in\")\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/users?page=2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\",function(){\r",
+							"\r",
+							"pm.response.to.have.status(201)\r",
+							"\r",
+							"})\r",
+							"\r",
+							"\r",
+							"postman.setNextRequest(\"UpdateUser\")\r",
+							"\r",
+							"console.log(\"Test Passed\")"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var name =\"Sachin Postman\"\r",
+							"\r",
+							"console.log(\"Going to set it as global variable\"+ name)\r",
+							"\r",
+							"pm.globals.set(\"Username\", name);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{Username}}\",\r\n    \"job\": \"Automation\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 204\",function(){\r",
+							"\r",
+							"pm.response.to.have.status(204)\r",
+							"\r",
+							"})\r",
+							"\r",
+							"\r",
+							"postman.setNextRequest(null)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/users/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\",function(){\r",
+							"\r",
+							"pm.response.to.have.status(200)\r",
+							"\r",
+							"})\r",
+							"\r",
+							"\r",
+							"postman.setNextRequest(\"DeleteUser\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"expert\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/users/887",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"887"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"console.log(\"Echo from collection\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
